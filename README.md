@@ -16,10 +16,12 @@ Generiert Tonleitern und Jazz-Skalen als MIDI-Noten für Musikprojekte.
 #include <SkalenGenerator.h>
 
 SkalenGenerator scaleGen;
-uint8_t scale[12];
+uint8_t scale[128];
+uint8_t totalNotes = 0;
 
 void setup() {
-  scaleGen.generateScale(scale, 60, IONIAN); // C-Dur generieren
+   uint8_t midibasenote = 60;
+   scaleGen.generateScale(scale, midibasenote, IONIAN, totalNotes); // C-Dur generieren
 }
 
 Unterstützte Skalen
