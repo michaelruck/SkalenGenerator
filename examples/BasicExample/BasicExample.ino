@@ -2,36 +2,39 @@
 
 SkalenGenerator scaleGen;
 uint8_t scale[128];
-uint8_t totalNotes = 0;
 
 void setup() {
+  pinMode(BUILTIN_LED, OUTPUT);
   Serial.begin(115200);
-  while (!Serial) { delay(1); };
+  while (!Serial) {
+    digitalWrite(BUILTIN_LED, !digitalRead(BUILTIN_LED));
+    delay(100);
+  }
+  digitalWrite(BUILTIN_LED, 0);
 
-  scaleGen.generateScale(scale, 60, IONIAN, totalNotes);
+  // Generiere C-Dur-Skala
+  uint8_t basePos = scaleGen.generateScale(scale, 60, IONIAN);
 
-  Serial.println("=== C-Dur im gesamten MIDI-Bereich ===");
-  Serial.printf("Anzahl Noten: %d\r\n", totalNotes);
-  for (uint8_t i = 0; i < totalNotes; i++) {
-    Serial.printf("%3d", scale[i]);
-    if (i < totalNotes - 1) Serial.print(", ");
-    if ((i+1) % 8 == 0) Serial.println();
+  // Ausgabe mit Serial.printf()
+  Serial.printf("\n=== C-Dur im gesamten MIDI-Bereich ===\n");
+  Serial.printf("Anzahl Noten: %d\n", scaleGen.totalNotes);
+  Serial.printf("Position der Basisnote (C4): %d\n", basePos);
+  Serial.printf("Noten (gruppiert nach Oktaven):\n");
+
+  // Oktavweise Ausgabe
+  for (uint8_t i = 0; i < scaleGen.totalNotes; i++) {
+    // Markiere Basisnote mit Klammern
+    const char* format = (i == basePos) ? "(%3d)" : "%4d";
+    
+    Serial.printf(format, scale[i]);
+    
+    // Zeilenumbruch nach 7 Noten (Oktavende)
+    if ((i + 1) % 7 == 0 || i == scaleGen.totalNotes - 1) {
+      Serial.printf(",\n");
+    } else {
+      Serial.printf(", ");
+    }
   }
 }
 
 void loop() {}
-
-/* Output:
-=== C-Dur im gesamten MIDI-Bereich ===
-Anzahl Noten: 73
-  0,   2,   3,   5,   7,   9,  10,  12, 
- 14,  16,  17,  19,  21,  23,  24,  26, 
- 28,  30,  31,  33,  35,  37,  38,  40, 
- 42,  44,  45,  47,  49,  51,  52,  54, 
- 56,  58,  60,  62,  63,  65,  67,  69, 
- 70,  72,  74,  76,  77,  79,  81,  83, 
- 84,  86,  88,  90,  91,  93,  95,  97, 
- 98, 100, 102, 104, 105, 107, 109, 111, 
-112, 114, 116, 118, 119, 121, 123, 125, 
-126
-*/
