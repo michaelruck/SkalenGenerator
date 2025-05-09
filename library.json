@@ -1,8 +1,22 @@
 {
   "name": "SkalenGenerator",
+  "version": "2.2.0",
+  "description": "MIDI scale generator with 17+ scale types",
+  "keywords": ["midi", "music", "scales", "arduino"],
   "repository": {
-    "url": "https://github.com/michaelruck/SkalenGenerator",
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/michaelruck/SkalenGenerator"
   },
-  "version": "2.2.0"
+  "authors": [
+    {
+      "name": "Michael Ruck",
+      "email": "michael.ruck@marsgasse.com",
+      "url": "https://marsgasse.com"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/michaelruck/SkalenGenerator",
+  "dependencies": {},
+  "frameworks": ["arduino"],
+  "platforms": ["*"]
 }
